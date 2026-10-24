@@ -340,7 +340,7 @@ void NinentyBassProcessor::processChunk (juce::AudioBuffer<float>& buffer)
         const float ceil    = juce::Decibels::decibelsToGain (get (ID::lowCeil));
         const float level   = juce::Decibels::decibelsToGain (get (ID::lowLevel));
 
-        auto up = oL.processSamplesUp (lowBlock.asConst());
+        auto up = oL.processSamplesUp (juce::dsp::AudioBlock<const float> (lowBlock));
         for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
         {
             auto* d = up.getChannelPointer (ch);
@@ -367,7 +367,7 @@ void NinentyBassProcessor::processChunk (juce::AudioBuffer<float>& buffer)
         const int   type  = (int) get (ID::highType);
         const float level = juce::Decibels::decibelsToGain (get (ID::highLevel));
 
-        auto up = oH.processSamplesUp (highBlock.asConst());
+        auto up = oH.processSamplesUp (juce::dsp::AudioBlock<const float> (highBlock));
         const bool sat = dDb > 0.05f;
         const float driveLn = juce::Decibels::decibelsToGain (dDb);
         const float comp = 1.f / std::sqrt (driveLn);
